@@ -35,7 +35,6 @@
             overflow: hidden;
         }
 
-        /* Fluid Animation Framework */
         .fade-in {
             animation: appReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
@@ -68,9 +67,7 @@
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .card:hover {
-            border-color: var(--border-glow);
-        }
+        .card:hover { border-color: var(--border-glow); }
 
         .brand-header h1 {
             font-size: 1.8rem;
@@ -86,9 +83,7 @@
             margin-bottom: 32px;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+        .form-group { margin-bottom: 20px; }
 
         .form-group label {
             display: block;
@@ -150,13 +145,10 @@
             cursor: pointer;
         }
 
-        .switch-link:hover {
-            text-decoration: underline;
-        }
+        .switch-link:hover { text-decoration: underline; }
 
         .hidden { display: none !important; }
 
-        /* Server Specs Side Details */
         .info-row {
             display: flex;
             justify-content: space-between;
@@ -168,7 +160,6 @@
         .info-label { color: var(--text-secondary); }
         .info-val { font-family: monospace; color: #cbd5e1; }
 
-        /* WORKSPACE STAGE */
         #app-workspace {
             width: 100vw;
             height: 100vh;
@@ -230,18 +221,6 @@
             padding: 40px;
         }
 
-        .launch-container {
-            max-width: 500px;
-            width: 100%;
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 40px;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-        }
-
-        /* Profile Block & Dynamic PFP Input */
         .user-badge {
             background: rgba(255, 255, 255, 0.02);
             padding: 12px;
@@ -275,7 +254,112 @@
             flex-shrink: 0;
         }
 
-        /* SETTINGS INTERACTIVE MODAL */
+        /* NATIVE INBOX UI STYLES */
+        .inbox-wrapper {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            height: 100%;
+            width: 100%;
+            max-width: 1200px;
+            background: #090a0f;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .inbox-list {
+            background: #0d0f16;
+            border-right: 1px solid var(--border-color);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .email-thread {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .email-thread:hover, .email-thread.active {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .email-thread.active {
+            border-left: 3px solid var(--accent-indigo);
+            padding-left: 17px;
+        }
+
+        .thread-sender {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #f1f5f9;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .thread-date {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .thread-subject {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .inbox-reader {
+            padding: 40px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .reader-header {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 24px;
+            margin-bottom: 24px;
+        }
+
+        .reader-subject {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #fff;
+        }
+
+        .reader-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .meta-avatar {
+            width: 40px;
+            height: 40px;
+            background: #1e293b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .reader-body {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #cbd5e1;
+        }
+
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -325,17 +409,9 @@
             align-items: center;
         }
 
-        .modal-btn:hover {
-            background: rgba(255,255,255,0.07);
-            border-color: rgba(255,255,255,0.1);
-        }
-
-        .modal-btn.danger {
-            color: var(--accent-red);
-        }
-        .modal-btn.danger:hover {
-            background: rgba(239, 68, 68, 0.08);
-        }
+        .modal-btn:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.1); }
+        .modal-btn.danger { color: var(--accent-red); }
+        .modal-btn.danger:hover { background: rgba(239, 68, 68, 0.08); }
 
         .close-modal-btn {
             background: none;
@@ -396,7 +472,6 @@
                     Have an account? <span class="switch-link" onclick="toggleFormView('login')">Back to Sign In</span>
                 </div>
             </div>
-
         </div>
 
         <div class="card" style="justify-content: flex-start;">
@@ -438,15 +513,68 @@
 
         <div class="main-viewport" id="viewport-content">
             
-            <div id="tab-inbox" class="launch-container">
-                <span style="font-size: 3rem; display: block; margin-bottom: 16px;">📧</span>
-                <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; color: #fff;">Secure Mail Server</h2>
-                <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; margin-bottom: 24px;">
-                    To protect your credentials from cross-site intercept blocks, access your mailbox safely in an isolated encryption session.
-                </p>
-                <a href="https://mail.purelymail.com/" target="_blank" rel="noopener noreferrer" class="btn-primary" style="display: inline-block; text-decoration: none; text-align: center; width: auto; padding: 14px 28px;">
-                    Open Webmail Session ↗
-                </a>
+            <div id="tab-inbox" class="inbox-wrapper">
+                
+                <div class="inbox-list">
+                    <div style="padding: 24px 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: #0d0f16; z-index: 10;">
+                        <span style="font-weight: 700; color: #fff; font-size: 1.1rem;">Inbox</span>
+                        <button class="btn-primary" style="margin: 0; padding: 6px 14px; width: auto; font-size: 0.8rem; background: rgba(255,255,255,0.1); color: #fff;">Compose ✎</button>
+                    </div>
+                    
+                    <div class="email-thread active" onclick="switchEmail(this, 'sys')">
+                        <div class="thread-sender">System Administrator <span class="thread-date">10:42 AM</span></div>
+                        <div class="thread-subject">Mailbox Node Provisioned</div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">Your local environment has been configured...</div>
+                    </div>
+
+                    <div class="email-thread" onclick="switchEmail(this, 'sec')">
+                        <div class="thread-sender">Security Daemon <span class="thread-date">Yesterday</span></div>
+                        <div class="thread-subject">Encryption Protocol Alert</div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">A new login was detected from a secure terminal...</div>
+                    </div>
+                </div>
+
+                <div class="inbox-reader">
+                    
+                    <div id="email-content-sys">
+                        <div class="reader-header">
+                            <div class="reader-subject">Mailbox Node Provisioned</div>
+                            <div class="reader-meta">
+                                <div class="meta-avatar">SA</div>
+                                <div>
+                                    <div style="font-weight: 600; color: #fff; font-size: 0.9rem;">System Administrator <span style="font-weight: 400; color: var(--text-secondary);">&lt;admin@noakesy.xyz&gt;</span></div>
+                                    <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 2px;">To: <span id="reader-to-address">you@noakesy.xyz</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="reader-body">
+                            <p style="margin-bottom: 16px;">Connection established successfully.</p>
+                            <p style="margin-bottom: 16px;">Welcome to the secure mail console. Your local environment has been configured, and IMAP/SMTP routing parameters are tracking active.</p>
+                            <div style="background: rgba(79, 70, 229, 0.1); border: 1px solid rgba(79, 70, 229, 0.2); padding: 16px; border-radius: 8px; margin-top: 30px;">
+                                <span style="color: var(--accent-indigo); font-weight: 600; font-size: 0.85rem; text-transform: uppercase;">⚠️ Interface Notice</span>
+                                <p style="font-size: 0.85rem; margin-top: 8px;">This is a local static dashboard view. Real-time Purelymail IMAP synchronization cannot be natively embedded into GitHub Pages due to strict Cross-Origin security constraints.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="email-content-sec" class="hidden">
+                        <div class="reader-header">
+                            <div class="reader-subject">Encryption Protocol Alert</div>
+                            <div class="reader-meta">
+                                <div class="meta-avatar" style="background: rgba(239, 68, 68, 0.2); color: var(--accent-red);">SD</div>
+                                <div>
+                                    <div style="font-weight: 600; color: #fff; font-size: 0.9rem;">Security Daemon <span style="font-weight: 400; color: var(--text-secondary);">&lt;security@noakesy.xyz&gt;</span></div>
+                                    <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 2px;">To: you@noakesy.xyz</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="reader-body">
+                            <p style="margin-bottom: 16px;">A standard security audit has been logged for your current session.</p>
+                            <p>All local keys and authentication tokens are actively protected under AES-256 standards.</p>
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
             <div id="tab-fleet" class="hidden" style="width: 100%; max-width: 800px; height: 100%; overflow-y: auto;">
@@ -463,7 +591,7 @@
                             </tr>
                         </thead>
                         <tbody id="fleet-table-body">
-                            </tbody>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -474,7 +602,6 @@
     <div id="settings-modal" class="modal-overlay hidden fade-in">
         <div class="modal-box">
             <div class="modal-title">Account Administration</div>
-            
             <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.05);">
                 <div class="user-avatar" id="modal-avatar-preview" style="width: 50px; height: 50px; font-size: 1.1rem;">U</div>
                 <div>
@@ -491,24 +618,20 @@
             
             <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.05); margin: 16px 0;">
             <button class="modal-btn" style="background: rgba(239, 68, 68, 0.1); color: var(--accent-red); border-color: rgba(239, 68, 68, 0.2);" onclick="terminateSession()">Sign Out of Console Session</button>
-
             <button class="close-modal-btn" onclick="closeSettingsModal()">Close Interface</button>
         </div>
     </div>
 
 
     <script>
-        // Global variables inside our browser session engine
         let activeUserEmail = "";
 
-        // Core initialization: Read accounts and profile image from local database storage on load
         window.addEventListener('DOMContentLoaded', () => {
             initializeAccountDatabase();
             renderFleetTable();
             loadProfilePicture();
         });
 
-        // Initialize localStorage database with a default master admin mailbox if empty
         function initializeAccountDatabase() {
             if (!localStorage.getItem('mailbox_accounts')) {
                 const initialAccounts = {
@@ -519,12 +642,11 @@
             }
         }
 
-        // Render rows dynamically from localStorage inside the Accounts list view
         function renderFleetTable() {
             const tableBody = document.getElementById('fleet-table-body');
             const accounts = JSON.parse(localStorage.getItem('mailbox_accounts')) || {};
             
-            tableBody.innerHTML = ""; // Wipe table clean before reloading elements
+            tableBody.innerHTML = ""; 
             
             Object.keys(accounts).forEach(email => {
                 const accountData = accounts[email];
@@ -540,7 +662,6 @@
             });
         }
 
-        // Toggle view visibility mechanics
         function toggleFormView(targetView) {
             const loginView = document.getElementById('login-view');
             const registerView = document.getElementById('register-view');
@@ -562,15 +683,11 @@
             }, 150);
         }
 
-        // Handle live account creations and dump variables directly to local data rows
         function handleAccountGeneration(event) {
             event.preventDefault();
             const prefix = document.getElementById('reg-user').value.trim().toLowerCase();
             const password = document.getElementById('reg-pass').value;
-            
-            // Format username clean
             const fullAddress = prefix.includes('@') ? prefix : `${prefix}@noakesy.xyz`;
-            
             const accounts = JSON.parse(localStorage.getItem('mailbox_accounts')) || {};
             
             if (accounts[fullAddress]) {
@@ -578,50 +695,39 @@
                 return;
             }
 
-            // Write object parameters directly to localStorage target line
-            accounts[fullAddress] = {
-                password: password,
-                type: "Standard Inbox",
-                date: new Date().toLocaleDateString()
-            };
+            accounts[fullAddress] = { password: password, type: "Standard Inbox", date: new Date().toLocaleDateString() };
             localStorage.setItem('mailbox_accounts', JSON.stringify(accounts));
-
-            // Refresh table dynamically
             renderFleetTable();
 
-            alert(`Mailbox routing node [ ${fullAddress} ] successfully provisioned! \n\nNote: To route actual live email data on your physical server architecture, remember to ensure this identical mailbox exists inside your Purelymail Admin Panel.`);
+            alert(`Mailbox routing node [ ${fullAddress} ] successfully provisioned!`);
             
-            // Clean values and return user to sign in step
             document.getElementById('reg-user').value = "";
             document.getElementById('reg-pass').value = "";
             toggleFormView('login');
             document.getElementById('login-email').value = fullAddress;
         }
 
-        // Session validation engine matching against localStorage keys
         function handleSessionLaunch(event) {
             event.preventDefault();
             const emailVal = document.getElementById('login-email').value.trim();
             const passVal = document.getElementById('login-pass').value;
-            
             const accounts = JSON.parse(localStorage.getItem('mailbox_accounts')) || {};
 
-            // Check if account data line exists inside storage matrix
             if (accounts[emailVal] && accounts[emailVal].password === passVal) {
                 activeUserEmail = emailVal;
                 
                 document.getElementById('user-display-name').innerText = emailVal;
                 document.getElementById('avatar-char').innerText = emailVal.charAt(0).toUpperCase();
+                document.getElementById('reader-to-address').innerText = emailVal; // Sync inbox to user
 
                 document.getElementById('gateway-stage').classList.add('hidden');
                 document.getElementById('app-workspace').classList.remove('hidden');
-                document.getElementById('login-pass').value = ""; // Clear pass box
+                document.getElementById('login-pass').value = ""; 
             } else {
                 alert("Access Denied: Invalid mailbox routing credentials.");
             }
         }
 
-        // App inner view layout switcher engine
         function switchAppTab(tabName) {
             const items = document.querySelectorAll('.nav-item');
             items.forEach(el => el.classList.remove('active'));
@@ -638,24 +744,26 @@
             }
         }
 
-        /* MODAL CONSOLE WINDOW INTERACTIONS */
-        function openSettingsModal() {
-            document.getElementById('settings-modal').classList.remove('hidden');
+        // Internal Inbox Navigation Engine
+        function switchEmail(element, emailId) {
+            const threads = document.querySelectorAll('.email-thread');
+            threads.forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+
+            document.getElementById('email-content-sys').classList.add('hidden');
+            document.getElementById('email-content-sec').classList.add('hidden');
+            document.getElementById(`email-content-${emailId}`).classList.remove('hidden');
         }
 
-        function closeSettingsModal() {
-            document.getElementById('settings-modal').classList.add('hidden');
-        }
+        function openSettingsModal() { document.getElementById('settings-modal').classList.remove('hidden'); }
+        function closeSettingsModal() { document.getElementById('settings-modal').classList.add('hidden'); }
 
-        // Custom Profile Picture Reader Engine saving strings directly to database
         function processAvatarUpdate(event) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const imgUrl = e.target.result;
-                    
-                    // Save base64 graphic data directly into local database
                     localStorage.setItem('console_profile_pfp', imgUrl);
                     applyProfilePicture(imgUrl);
                 };
@@ -665,20 +773,17 @@
 
         function loadProfilePicture() {
             const savedPfp = localStorage.getItem('console_profile_pfp');
-            if (savedPfp) {
-                applyProfilePicture(savedPfp);
-            }
+            if (savedPfp) { applyProfilePicture(savedPfp); }
         }
 
         function applyProfilePicture(url) {
             const avatars = [document.getElementById('avatar-char'), document.getElementById('modal-avatar-preview')];
             avatars.forEach(avatar => {
                 avatar.style.backgroundImage = `url('${url}')`;
-                avatar.innerText = ''; // Clear text character
+                avatar.innerText = ''; 
             });
         }
 
-        // Central Admin Console Button Control Hooks updating localStorage references
         function triggerConsoleAction(actionType) {
             const accounts = JSON.parse(localStorage.getItem('mailbox_accounts')) || {};
 
@@ -705,11 +810,8 @@
                 }
             } else if (actionType === 'delete') {
                 if (confirm(`CRITICAL WARNING: Are you sure you want to permanently delete the routing node account [ ${activeUserEmail} ] from this console dashboard tracking interface?`)) {
-                    
                     delete accounts[activeUserEmail];
                     localStorage.setItem('mailbox_accounts', JSON.stringify(accounts));
-                    
-                    // Re-render matching database rows
                     renderFleetTable();
                     alert("Account trace dropped from database console mapping variables.");
                     terminateSession();
@@ -718,7 +820,6 @@
             closeSettingsModal();
         }
 
-        // Drop active runtime workspace view loop
         function terminateSession() {
             closeSettingsModal();
             activeUserEmail = "";
