@@ -463,12 +463,7 @@
                             </tr>
                         </thead>
                         <tbody id="fleet-table-body">
-                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 0.9rem;">
-                                <td style="padding: 14px 0; color: #fff;">default@noakesy.xyz</td>
-                                <td><span style="background: rgba(16, 185, 129, 0.08); color: var(--accent-green); padding: 3px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 600;">ACTIVE</span></td>
-                                <td style="color: var(--text-secondary);">Standard Inbox</td>
-                            </tr>
-                        </tbody>
+                            </tbody>
                     </table>
                 </div>
             </div>
@@ -503,6 +498,233 @@
 
 
     <script>
+        // Global variables inside our browser session engine
+        let activeUserEmail = "";
+
+        // Core initialization: Read accounts and profile image from local database storage on load
+        window.addEventListener('DOMContentLoaded', () => {
+            initializeAccountDatabase();
+            renderFleetTable();
+            loadProfilePicture();
+        });
+
+        // Initialize localStorage database with a default master admin mailbox if empty
+        function initializeAccountDatabase() {
+            if (!localStorage.getItem('mailbox_accounts')) {
+                const initialAccounts = {
+                    "admin@noakesy.xyz": { password: "admin", type: "Master Inbox", date: new Date().toLocaleDateString() },
+                    "default@noakesy.xyz": { password: "password123", type: "Standard Inbox", date: new Date().toLocaleDateString() }
+                };
+                localStorage.setItem('mailbox_accounts', JSON.stringify(initialAccounts));
+            }
+        }
+
+        // Render rows dynamically from localStorage inside the Accounts list view
+        function renderFleetTable() {
+            const tableBody = document.getElementById('fleet-table-body');
+            const accounts = JSON.parse(localStorage.getItem('mailbox_accounts')) || {};
+            
+            tableBody.innerHTML = ""; // Wipe table clean before reloading elements
+            
+            Object.keys(accounts).forEach(email => {
+                const accountData = accounts[email];
+                const newRow = document.createElement('tr');
+                newRow.style.borderBottom = '1px solid rgba(255,255,255,0.03)';
+                newRow.style.fontSize = '0.9rem';
+                newRow.innerHTML = `
+                    <td style="padding: 14px 0; color: #fff;">${email}</td>
+                    <td><span style="background: rgba(16, 185, 129, 0.08); color: #10b981; padding: 3px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 600;">ACTIVE</span></td>
+                    <td style="color: var(--text-secondary);">${accountData.type}</td>
+                `;
+                tableBody.appendChild(newRow);
+            });
+        }
+
         // Toggle view visibility mechanics
         function toggleFormView(targetView) {
-            const loginView = document.getElementById('login
+            const loginView = document.getElementById('login-view');
+            const registerView = document.getElementById('register-view');
+            const card = document.getElementById('form-card');
+            
+            card.style.transform = 'scale(0.98)';
+            card.style.opacity = '0.4';
+            
+            setTimeout(() => {
+                if (targetView === 'register') {
+                    loginView.classList.add('hidden');
+                    registerView.classList.remove('hidden');
+                } else {
+                    registerView.classList.add('hidden');
+                    loginView.classList.remove('hidden');
+                }
+                card.style.transform = 'scale(1)';
+                card.style.opacity = '1';
+            }, 150);
+        }
+
+        // Handle live account creations and dump variables directly to local data rows
+        function handleAccountGeneration(event) {
+            event.preventDefault();
+            const prefix = document.getElementById('reg-user').value.trim().toLowerCase();
+            const password = document.getElementById('reg-pass').value;
+            
+            // Format username clean
+            const fullAddress = prefix.includes('@') ? prefix : `${prefix}@noakesy.xyz`;
+            
+            const accounts = JSON.parse(localStorage.getItem('mailbox_accounts')) || {};
+            
+            if (accounts[fullAddress]) {
+                alert("Error: This mailbox node is already allocated.");
+                return;
+            }
+
+            // Write object parameters directly to localStorage target line
+            accounts[fullAddress] = {
+                password: password,
+                type: "Standard Inbox",
+                date: new Date().toLocaleDateString()
+            };
+            localStorage.setItem('mailbox_accounts', JSON.stringify(accounts));
+
+            // Refresh table dynamically
+            renderFleetTable();
+
+            alert(`Mailbox routing node [ ${fullAddress} ] successfully provisioned! \n\nNote: To route actual live email data on your physical server architecture, remember to ensure this identical mailbox exists inside your Purelymail Admin Panel.`);
+            
+            // Clean values and return user to sign in step
+            document.getElementById('reg-user').value = "";
+            document.getElementById('reg-pass').value = "";
+            toggleFormView('login');
+            document.getElementById('login-email').value = fullAddress;
+        }
+
+        // Session validation engine matching against localStorage keys
+        function handleSessionLaunch(event) {
+            event.preventDefault();
+            const emailVal = document.getElementById('login-email').value.trim();
+            const passVal = document.getElementById('login-pass').value;
+            
+            const accounts = JSON.parse(localStorage.getItem('mailbox_accounts')) || {};
+
+            // Check if account data line exists inside storage matrix
+            if (accounts[emailVal] && accounts[emailVal].password === passVal) {
+                activeUserEmail = emailVal;
+                
+                document.getElementById('user-display-name').innerText = emailVal;
+                document.getElementById('avatar-char').innerText = emailVal.charAt(0).toUpperCase();
+
+                document.getElementById('gateway-stage').classList.add('hidden');
+                document.getElementById('app-workspace').classList.remove('hidden');
+                document.getElementById('login-pass').value = ""; // Clear pass box
+            } else {
+                alert("Access Denied: Invalid mailbox routing credentials.");
+            }
+        }
+
+        // App inner view layout switcher engine
+        function switchAppTab(tabName) {
+            const items = document.querySelectorAll('.nav-item');
+            items.forEach(el => el.classList.remove('active'));
+            
+            document.getElementById('tab-inbox').classList.add('hidden');
+            document.getElementById('tab-fleet').classList.add('hidden');
+
+            if (tabName === 'inbox') {
+                document.getElementById('tab-inbox').classList.remove('hidden');
+                event.currentTarget.classList.add('active');
+            } else if (tabName === 'fleet') {
+                document.getElementById('tab-fleet').classList.remove('hidden');
+                event.currentTarget.classList.add('active');
+            }
+        }
+
+        /* MODAL CONSOLE WINDOW INTERACTIONS */
+        function openSettingsModal() {
+            document.getElementById('settings-modal').classList.remove('hidden');
+        }
+
+        function closeSettingsModal() {
+            document.getElementById('settings-modal').classList.add('hidden');
+        }
+
+        // Custom Profile Picture Reader Engine saving strings directly to database
+        function processAvatarUpdate(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgUrl = e.target.result;
+                    
+                    // Save base64 graphic data directly into local database
+                    localStorage.setItem('console_profile_pfp', imgUrl);
+                    applyProfilePicture(imgUrl);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function loadProfilePicture() {
+            const savedPfp = localStorage.getItem('console_profile_pfp');
+            if (savedPfp) {
+                applyProfilePicture(savedPfp);
+            }
+        }
+
+        function applyProfilePicture(url) {
+            const avatars = [document.getElementById('avatar-char'), document.getElementById('modal-avatar-preview')];
+            avatars.forEach(avatar => {
+                avatar.style.backgroundImage = `url('${url}')`;
+                avatar.innerText = ''; // Clear text character
+            });
+        }
+
+        // Central Admin Console Button Control Hooks updating localStorage references
+        function triggerConsoleAction(actionType) {
+            const accounts = JSON.parse(localStorage.getItem('mailbox_accounts')) || {};
+
+            if (actionType === 'cache') {
+                localStorage.removeItem('console_profile_pfp');
+                const defaultAvatars = [document.getElementById('avatar-char'), document.getElementById('modal-avatar-preview')];
+                defaultAvatars.forEach(avatar => {
+                    avatar.style.backgroundImage = 'none';
+                    avatar.innerText = activeUserEmail ? activeUserEmail.charAt(0).toUpperCase() : 'U';
+                });
+                alert("Application profile assets and local configuration caches dropped successfully.");
+            } else if (actionType === 'password') {
+                const newPass = prompt("Enter your new mailbox access password update:");
+                if (newPass && newPass.trim() !== "") {
+                    if (accounts[activeUserEmail]) {
+                        accounts[activeUserEmail].password = newPass;
+                        localStorage.setItem('mailbox_accounts', JSON.stringify(accounts));
+                        alert("Mailbox runtime security access credentials updated successfully.");
+                    }
+                }
+            } else if (actionType === 'purge') {
+                if (confirm("Are you sure you want to completely purge local inbox view buffers? This cannot be undone.")) {
+                    alert("Stored local application mailbox display buffers wiped completely.");
+                }
+            } else if (actionType === 'delete') {
+                if (confirm(`CRITICAL WARNING: Are you sure you want to permanently delete the routing node account [ ${activeUserEmail} ] from this console dashboard tracking interface?`)) {
+                    
+                    delete accounts[activeUserEmail];
+                    localStorage.setItem('mailbox_accounts', JSON.stringify(accounts));
+                    
+                    // Re-render matching database rows
+                    renderFleetTable();
+                    alert("Account trace dropped from database console mapping variables.");
+                    terminateSession();
+                }
+            }
+            closeSettingsModal();
+        }
+
+        // Drop active runtime workspace view loop
+        function terminateSession() {
+            closeSettingsModal();
+            activeUserEmail = "";
+            document.getElementById('app-workspace').classList.add('hidden');
+            document.getElementById('gateway-stage').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
