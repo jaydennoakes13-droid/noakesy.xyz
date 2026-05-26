@@ -1,8 +1,19 @@
-<script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>noakesy.xyz | Loading...</title>
+    <style>
+        body { background: #06070a; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    </style>
+</head>
+<body>
+    <div id="status">Initializing Terminal...</div>
 
-        // Your Config
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
         const firebaseConfig = {
             apiKey: "AIzaSyACkpKa9X-L-k6vnG4Zb3vi-9DB_amNJ2w",
             authDomain: "mail-d1326.firebaseapp.com",
@@ -12,53 +23,13 @@
             appId: "1:451137486895:web:40de2a8c7986f7c46b46da"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // Fetch emails and inject into your existing structure
-        async function fetchAndRenderEmails() {
-            const listContainer = document.querySelector('.inbox-list');
-            const readerContainer = document.querySelector('.inbox-reader');
-            
-            const q = query(collection(db, "inbox"), orderBy("timestamp", "desc"));
-            const snapshot = await getDocs(q);
-
-            snapshot.forEach((doc, index) => {
-                const data = doc.data();
-                const emailId = `dynamic-email-${index}`;
-
-                // 1. Append to your Sidebar (List)
-                const thread = document.createElement('div');
-                thread.className = 'email-thread';
-                thread.onclick = () => switchEmail(thread, emailId);
-                thread.innerHTML = `
-                    <div class="thread-sender">${data.sender} <span class="thread-date">Just now</span></div>
-                    <div class="thread-subject">${data.subject}</div>
-                `;
-                listContainer.appendChild(thread);
-
-                // 2. Append to Reader
-                const content = document.createElement('div');
-                content.id = `email-content-${emailId}`;
-                content.className = 'hidden';
-                content.innerHTML = `
-                    <div class="reader-header">
-                        <div class="reader-subject">${data.subject}</div>
-                        <div class="reader-meta">
-                            <div class="meta-avatar">${data.sender.charAt(0)}</div>
-                            <div>
-                                <div style="font-weight: 600; color: #fff;">${data.sender}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="reader-body">${data.body || "No body content provided."}</div>
-                `;
-                readerContainer.appendChild(content);
-            });
+        try {
+            const app = initializeApp(firebaseConfig);
+            const db = getFirestore(app);
+            document.getElementById('status').innerText = "Connection Successful: Database Linked.";
+        } catch (e) {
+            document.getElementById('status').innerText = "Error: " + e.message;
         }
-
-        // Call this when user logs in
-        window.loadDatabaseInbox = fetchAndRenderEmails;
     </script>
 </body>
 </html>
