@@ -224,13 +224,21 @@
         .main-viewport {
             height: 100%;
             background: #0e0f16;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
         }
 
-        .mail-frame-container, iframe {
+        .launch-container {
+            max-width: 500px;
             width: 100%;
-            height: 100%;
-            border: none;
-            background: #fff;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
         /* Profile Block & Dynamic PFP Input */
@@ -429,11 +437,19 @@
         </div>
 
         <div class="main-viewport" id="viewport-content">
-            <div id="tab-inbox" class="mail-frame-container">
-                <iframe src="https://mail.purelymail.com/" title="Webmail Viewport"></iframe>
+            
+            <div id="tab-inbox" class="launch-container">
+                <span style="font-size: 3rem; display: block; margin-bottom: 16px;">📧</span>
+                <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; color: #fff;">Secure Mail Server</h2>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; margin-bottom: 24px;">
+                    To protect your credentials from cross-site intercept blocks, access your mailbox safely in an isolated encryption session.
+                </p>
+                <a href="https://mail.purelymail.com/" target="_blank" rel="noopener noreferrer" class="btn-primary" style="display: inline-block; text-decoration: none; text-align: center; width: auto; padding: 14px 28px;">
+                    Open Webmail Session ↗
+                </a>
             </div>
 
-            <div id="tab-fleet" class="hidden" style="padding: 40px; overflow-y: auto;">
+            <div id="tab-fleet" class="hidden" style="width: 100%; max-width: 800px; height: 100%; overflow-y: auto;">
                 <h2 style="font-size: 1.5rem; margin-bottom: 6px; font-weight: 700;">Mailbox Catalog</h2>
                 <p style="color: var(--text-secondary); margin-bottom: 24px; font-size: 0.9rem;">Registered operational email nodes currently tracking live metrics on noakesy.xyz.</p>
                 
@@ -489,131 +505,4 @@
     <script>
         // Toggle view visibility mechanics
         function toggleFormView(targetView) {
-            const loginView = document.getElementById('login-view');
-            const registerView = document.getElementById('register-view');
-            const card = document.getElementById('form-card');
-            
-            card.style.transform = 'scale(0.98)';
-            card.style.opacity = '0.4';
-            
-            setTimeout(() => {
-                if (targetView === 'register') {
-                    loginView.classList.add('hidden');
-                    registerView.classList.remove('hidden');
-                } else {
-                    registerView.classList.add('hidden');
-                    loginView.classList.remove('hidden');
-                }
-                card.style.transform = 'scale(1)';
-                card.style.opacity = '1';
-            }, 150);
-        }
-
-        // Add account element row handler list view
-        function handleAccountGeneration(event) {
-            event.preventDefault();
-            const prefix = document.getElementById('reg-user').value.trim().toLowerCase();
-            const fullAddress = prefix.includes('@') ? prefix : `${prefix}@noakesy.xyz`;
-            
-            const tableBody = document.getElementById('fleet-table-body');
-            const newRow = document.createElement('tr');
-            newRow.style.borderBottom = '1px solid rgba(255,255,255,0.03)';
-            newRow.style.fontSize = '0.9rem';
-            newRow.innerHTML = `
-                <td style="padding: 14px 0; color: #fff;">${fullAddress}</td>
-                <td><span style="background: rgba(16, 185, 129, 0.08); color: #10b981; padding: 3px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 600;">ACTIVE</span></td>
-                <td style="color: var(--text-secondary);">Standard Inbox</td>
-            `;
-            tableBody.appendChild(newRow);
-
-            alert(`Mailbox routing cataloged! \n\nRemember: Because GitHub Pages serves static files, you will also need to hit 'Add User' in your Master Purelymail Admin Panel to configure the actual server space.`);
-            toggleFormView('login');
-            document.getElementById('login-email').value = fullAddress;
-        }
-
-        // Active runtime window deployment switch
-        function handleSessionLaunch(event) {
-            event.preventDefault();
-            const emailVal = document.getElementById('login-email').value;
-            
-            document.getElementById('user-display-name').innerText = emailVal;
-            document.getElementById('avatar-char').innerText = emailVal.charAt(0).toUpperCase();
-
-            document.getElementById('gateway-stage').classList.add('hidden');
-            document.getElementById('app-workspace').classList.remove('hidden');
-        }
-
-        // App inner view layout switcher engine
-        function switchAppTab(tabName) {
-            const items = document.querySelectorAll('.nav-item');
-            items.forEach(el => el.classList.remove('active'));
-            
-            document.getElementById('tab-inbox').classList.add('hidden');
-            document.getElementById('tab-fleet').classList.add('hidden');
-
-            if (tabName === 'inbox') {
-                document.getElementById('tab-inbox').classList.remove('hidden');
-                event.currentTarget.classList.add('active');
-            } else if (tabName === 'fleet') {
-                document.getElementById('tab-fleet').classList.remove('hidden');
-                event.currentTarget.classList.add('active');
-            }
-        }
-
-        /* MODAL CONSOLE WINDOW INTERACTIONS */
-        function openSettingsModal() {
-            document.getElementById('settings-modal').classList.remove('hidden');
-        }
-
-        function closeSettingsModal() {
-            document.getElementById('settings-modal').classList.add('hidden');
-        }
-
-        // Custom Profile Picture Reader Engine
-        function processAvatarUpdate(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const imgUrl = e.target.result;
-                    
-                    // Assign loaded graphics straight to sidebar UI avatars
-                    const avatars = [document.getElementById('avatar-char'), document.getElementById('modal-avatar-preview')];
-                    avatars.forEach(avatar => {
-                        avatar.style.backgroundImage = `url('${imgUrl}')`;
-                        avatar.innerText = ''; // Clear text
-                    });
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        // Central Admin Console Button Simulation Control Hooks
-        function triggerConsoleAction(actionType) {
-            if (actionType === 'cache') {
-                alert("Application local storage session configuration cache cleared successfully.");
-            } else if (actionType === 'password') {
-                const newPass = prompt("Enter your new encryption password update:");
-                if (newPass) alert("Password parameters tracking successfully updated.");
-            } else if (actionType === 'purge') {
-                if (confirm("Are you sure you want to purge local mailbox storage buffers? This cannot be undone.")) {
-                    alert("Stored local view cache buffers successfully dropped.");
-                }
-            } else if (actionType === 'delete') {
-                if (confirm("CRITICAL WARNING: Are you sure you want to permanently delete this routing node account from this console tracking matrix?")) {
-                    alert("Account node trace dropped.");
-                    terminateSession();
-                }
-            }
-            closeSettingsModal();
-        }
-
-        // Drop active tracing run loops session
-        function terminateSession() {
-            closeSettingsModal();
-            document.getElementById('app-workspace').classList.add('hidden');
-            document.getElementById('gateway-stage').classList.remove('hidden');
-        }
-    </script>
-</body>
-</html>
+            const loginView = document.getElementById('login
