@@ -3,246 +3,513 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Noakesy Mail Engine</title>
+    <title>Noakesy Mail Engine v2</title>
     <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #08090f 0%, #11131f 100%);
+            --panel-bg: rgba(20, 22, 37, 0.65);
+            --border-glow: rgba(99, 102, 241, 0.2);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-purple: #a855f7;
+            --accent-indigo: #6366f1;
+            --accent-green: #10b981;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #0d0e15 0%, #151724 100%);
-            color: #e2e8f0;
+            background: var(--bg-gradient);
+            color: var(--text-primary);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow-x: hidden;
+            overflow: hidden;
+        }
+
+        /* Fluid Animation Core */
+        .fade-in {
+            animation: fadeInEffect 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInEffect {
+            from { opacity: 0; transform: translateY(12px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .container {
             width: 100%;
-            max-width: 1100px;
+            max-width: 1200px;
+            height: 680px;
             padding: 20px;
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 30px;
-        }
-
-        @media (min-width: 768px) {
-            .container {
-                grid-template-columns: 1fr 1.2fr;
-            }
+            grid-template-columns: 1fr 1.3fr;
+            gap: 25px;
+            transition: all 0.5s ease;
         }
 
         .card {
-            background: rgba(30, 33, 50, 0.7);
-            border: 1px solid rgba(99, 102, 241, 0.15);
-            backdrop-filter: blur(12px);
-            border-radius: 16px;
-            padding: 40px 30px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            background: var(--panel-bg);
+            border: 1px solid var(--border-glow);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .brand-header {
-            margin-bottom: 30px;
-            text-align: center;
+        .card:hover {
+            box-shadow: 0 25px 60px rgba(99, 102, 241, 0.1);
         }
 
         .brand-header h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(to right, #6366f1, #a855f7);
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #818cf8, #c084fc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
+            letter-spacing: -1px;
+            margin-bottom: 6px;
         }
 
         .brand-header p {
-            color: #94a3b8;
-            font-size: 0.9rem;
-            margin-top: 5px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 35px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
+            position: relative;
         }
 
         .form-group label {
             display: block;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #94a3b8;
+            letter-spacing: 0.8px;
+            color: var(--text-secondary);
             margin-bottom: 8px;
         }
 
         .form-input {
             width: 100%;
-            background: #0f111a;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 14px 16px;
-            border-radius: 8px;
+            background: #090a10;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 16px;
+            border-radius: 10px;
             color: #fff;
             font-size: 1rem;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
         }
 
         .form-input:focus {
             outline: none;
-            border-color: #6366f1;
-            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+            border-color: var(--accent-indigo);
+            background: #0d0f18;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
         }
 
         .btn-primary {
             width: 100%;
-            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            background: linear-gradient(135deg, var(--accent-indigo) 0%, #4f46e5 100%);
             color: white;
             border: none;
-            padding: 14px;
-            border-radius: 8px;
+            padding: 16px;
+            border-radius: 10px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 10px;
         }
 
         .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
         }
 
-        /* Dashboard Styles */
-        .dashboard {
+        .switch-mode-text {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 20px;
+        }
+
+        .switch-link {
+            color: var(--accent-purple);
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .switch-link:hover {
+            text-decoration: underline;
+        }
+
+        /* View Switching Logic via JS */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Right Panel Dashboard Details */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .stat-box {
+            background: rgba(10, 11, 18, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 22px;
+            transition: border 0.3s ease;
+        }
+
+        .stat-box:hover {
+            border-color: rgba(168, 85, 247, 0.2);
+        }
+
+        .stat-box span {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-box h2 {
+            font-size: 1.8rem;
+            margin-top: 6px;
+        }
+
+        /* Live Fullscreen Application Interface Container */
+        #app-workspace {
+            width: 100vw;
+            height: 100vh;
+            background: #090a0f;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+        }
+
+        .sidebar {
+            background: #11121a;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 30px 20px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
 
-        .panel-title {
-            font-size: 1.3rem;
-            font-weight: 600;
+        .nav-group h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            padding-left: 10px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            color: #cbd5e1;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(99, 102, 241, 0.1);
             color: #fff;
-            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .main-viewport {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background: #0d0e15;
+            position: relative;
+        }
+
+        /* Real Embed Webmail Engine Viewport */
+        .mail-frame-container {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #fff;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .user-badge {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             gap: 10px;
-        }
-
-        .panel-title::before {
-            content: '';
-            display: inline-block;
-            width: 8px;
-            height: 18px;
-            background: #a855f7;
-            border-radius: 4px;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .stat-box {
-            background: rgba(15, 17, 26, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 20px;
         }
 
-        .stat-box span {
-            display: block;
-            font-size: 0.8rem;
-            color: #94a3b8;
-            text-transform: uppercase;
-        }
-
-        .stat-box h2 {
-            font-size: 1.8rem;
-            color: #fff;
-            margin-top: 5px;
-        }
-
-        .info-list {
-            list-style: none;
-        }
-
-        .info-list li {
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            font-size: 0.9rem;
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-purple);
+            border-radius: 50%;
             display: flex;
-            justify-content: space-between;
-            color: #cbd5e1;
-        }
-
-        .info-list li:last-child {
-            border-bottom: none;
-        }
-
-        .info-list strong {
-            color: #a855f7;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.85rem;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <div id="gateway-stage" class="container fade-in">
         
-        <div class="card">
-            <div class="brand-header">
-                <h1>NOAKESY MAIL</h1>
-                <p>Secure Inbox Gateway</p>
-            </div>
+        <div class="card" id="form-card">
             
-            <form action="https://webmail.purelymail.com/login.php" method="POST">
-                <div class="form-group">
-                    <label for="rcmloginuser">Email Address</label>
-                    <input type="email" id="rcmloginuser" name="_user" class="form-input" placeholder="name@noakesy.xyz" required autocomplete="username">
+            <div id="login-view">
+                <div class="brand-header">
+                    <h1>NOAKESY MAIL</h1>
+                    <p>Secure Fleet Gateway</p>
                 </div>
-                
-                <div class="form-group">
-                    <label for="rcmloginpwd">Password</label>
-                    <input type="password" id="rcmloginpwd" name="_pass" class="form-input" placeholder="••••••••" required autocomplete="current-password">
+                <form onsubmit="handleSessionLaunch(event)">
+                    <div class="form-group">
+                        <label>Email Fleet Target</label>
+                        <input type="email" id="login-email" class="form-input" placeholder="alt1@noakesy.xyz" required autocomplete="username">
+                    </div>
+                    <div class="form-group">
+                        <label>Security Key</label>
+                        <input type="password" id="login-pass" class="form-input" placeholder="••••••••" required autocomplete="current-password">
+                    </div>
+                    <button type="submit" class="btn-primary">Initialize Access</button>
+                </form>
+                <div class="switch-mode-text">
+                    Need an alternate account? <span class="switch-link" onclick="toggleFormView('register')">Provision New Account</span>
                 </div>
-                
-                <input type="hidden" name="_action" value="login">
-                <input type="hidden" name="_timezone" value="_auto_">
-                
-                <button type="submit" class="btn-primary">Sign In to Inbox</button>
-            </form>
+            </div>
+
+            <div id="register-view" class="hidden">
+                <div class="brand-header">
+                    <h1>PROVISION ENGINE</h1>
+                    <p>Generate Sub-Account Nodes</p>
+                </div>
+                <form onsubmit="handleAccountGeneration(event)">
+                    <div class="form-group">
+                        <label>Desired Address Prefix</label>
+                        <input type="text" id="reg-user" class="form-input" placeholder="e.g. steam4" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Master Passphrase</label>
+                        <input type="password" id="reg-pass" class="form-input" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn-primary" style="background: linear-gradient(135deg, var(--accent-purple) 0%, #7c3aed 100%);">Deploy Node Address</button>
+                </form>
+                <div class="switch-mode-text">
+                    Already registered? <span class="switch-link" onclick="toggleFormView('login')">Return to Gateway</span>
+                </div>
+            </div>
+
         </div>
 
-        <div class="card dashboard">
+        <div class="card" style="justify-content: space-between;">
             <div>
-                <div class="panel-title">System Topology</div>
+                <div style="font-weight: 700; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: #fff; margin-bottom: 25px; display: flex; align-items: center; gap: 8px;">
+                    <span style="width: 4px; height: 16px; background: var(--accent-indigo); display: inline-block; border-radius: 2px;"></span>
+                    Network Topology status
+                </div>
                 <div class="stats-grid">
                     <div class="stat-box">
-                        <span>Domain Status</span>
-                        <h2 style="color: #10b981;">ACTIVE</h2>
+                        <span>Core Node Link</span>
+                        <h2 style="color: var(--accent-green);">ONLINE</h2>
                     </div>
                     <div class="stat-box">
-                        <span>Active Fleet</span>
-                        <h2>Infinite</h2>
+                        <span>Domain Matrix</span>
+                        <h2>noakesy.xyz</h2>
                     </div>
                 </div>
+                <div style="font-weight: 700; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: #fff; margin-bottom: 25px; display: flex; align-items: center; gap: 8px;">
+                    <span style="width: 4px; height: 16px; background: var(--accent-purple); display: inline-block; border-radius: 2px;"></span>
+                    Technical Endpoints
+                </div>
+                <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.02); font-size: 0.9rem; line-height: 1.8;">
+                    <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-secondary);">IMAP target:</span><span style="font-family: monospace; color: var(--accent-purple);">imap.purelymail.com</span></div>
+                    <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-secondary);">SMTP target:</span><span style="font-family: monospace; color: var(--accent-purple);">smtp.purelymail.com</span></div>
+                    <div style="display: flex; justify-content: space-between;"><span style="color: var(--text-secondary);">MX Priority:</span><span style="font-family: monospace; color: var(--accent-green);">Active (Verified)</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                <div class="panel-title">Mail Engine Specs</div>
-                <ul class="info-list">
-                    <li><span>MX Server</span> <strong>mailserver.purelymail.com</strong></li>
-                    <li><span>IMAP Protocol</span> <strong>imap.purelymail.com (Port 993)</strong></li>
-                    <li><span>SMTP Protocol</span> <strong>smtp.purelymail.com (Port 465)</strong></li>
-                    <li><span>Storage Allocation</span> <strong>Resource Shared Pool</strong></li>
-                </ul>
+
+    <div id="app-workspace" class="hidden fade-in">
+        
+        <div class="sidebar">
+            <div class="nav-group">
+                <div style="font-weight: 800; font-size: 1.3rem; letter-spacing: -0.5px; margin-bottom: 30px; background: linear-gradient(to right, #fff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    NOAKESY MAIL
+                </div>
+                
+                <h3>Navigation Nodes</h3>
+                <div class="nav-item active" onclick="switchAppTab('inbox')">
+                    <span style="margin-right: 10px;">📥</span> Primary Inbox
+                </div>
+                <div class="nav-item" onclick="switchAppTab('fleet')">
+                    <span style="margin-right: 10px;">🛡️</span> Fleet Accounts
+                </div>
+            </div>
+
+            <div class="user-badge">
+                <div class="user-avatar" id="avatar-char">U</div>
+                <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                    <div style="font-size: 0.85rem; font-weight: 600;" id="user-display-name">user@noakesy.xyz</div>
+                    <div style="font-size: 0.7rem; color: var(--text-secondary); cursor: pointer;" onclick="terminateSession()">Terminate Session</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-viewport" id="viewport-content">
+            <div id="tab-inbox" class="mail-frame-container">
+                <iframe src="https://webmail.purelymail.com/" title="Webmail Viewer"></iframe>
+            </div>
+
+            <div id="tab-fleet" class="hidden" style="padding: 40px; overflow-y: auto;">
+                <h2 style="font-size: 1.8rem; margin-bottom: 10px;">Your Registered Fleet Nodes</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 30px;">Active mailboxes verified under the noakesy.xyz domain infrastructure matrix.</p>
+                
+                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 14px; padding: 25px;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--text-secondary); font-size: 0.85rem; text-transform: uppercase;">
+                                <th style="padding-bottom: 15px;">Target Address</th>
+                                <th style="padding-bottom: 15px;">Status</th>
+                                <th style="padding-bottom: 15px;">Storage Pool</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fleet-table-body">
+                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 0.95rem;">
+                                <td style="padding: 15px 0; color: #fff;">alt1@noakesy.xyz</td>
+                                <td><span style="background: rgba(16, 185, 129, 0.15); color: var(--accent-green); padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 600;">ACTIVE</span></td>
+                                <td style="color: var(--text-secondary);">Shared Elastic Pool</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
     </div>
 
+    <script>
+        // Form swap toggle engine (Login <-> Create Account views)
+        function toggleFormView(targetView) {
+            const loginView = document.getElementById('login-view');
+            const registerView = document.getElementById('register-view');
+            const card = document.getElementById('form-card');
+            
+            // Trigger slick internal card reset animation
+            card.style.transform = 'scale(0.97)';
+            card.style.opacity = '0.5';
+            
+            setTimeout(() => {
+                if (targetView === 'register') {
+                    loginView.classList.add('hidden');
+                    registerView.classList.remove('hidden');
+                } else {
+                    registerView.classList.add('hidden');
+                    loginView.classList.remove('hidden');
+                }
+                card.style.transform = 'scale(1)';
+                card.style.opacity = '1';
+            }, 200);
+        }
+
+        // Account registration simulation handler
+        function handleAccountGeneration(event) {
+            event.preventDefault();
+            const prefix = document.getElementById('reg-user').value.trim().toLowerCase();
+            const fullAddress = prefix.includes('@') ? prefix : `${prefix}@noakesy.xyz`;
+            
+            // Add account to our local visual dashboard representation list
+            const tableBody = document.getElementById('fleet-table-body');
+            const newRow = document.createElement('tr');
+            newRow.style.borderBottom = '1px solid rgba(255,255,255,0.03)';
+            newRow.style.fontSize = '0.95rem';
+            newRow.innerHTML = `
+                <td style="padding: 15px 0; color: #fff;">${fullAddress}</td>
+                <td><span style="background: rgba(16, 185, 129, 0.15); color: #10b981; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 600;">ACTIVE</span></td>
+                <td style="color: #94a3b8;">Shared Elastic Pool</td>
+            `;
+            tableBody.appendChild(newRow);
+
+            alert(`Account Node successfully mapped! \n\nIMPORTANT NOTE: Since GitHub Pages operates as a static frontend layout, ensure you also click "Add User" inside your Master Purelymail Dashboard to finalize server routing parameters.`);
+            toggleFormView('login');
+            document.getElementById('login-email').value = fullAddress;
+        }
+
+        // Session initialization launcher (Log into workspace view)
+        function handleSessionLaunch(event) {
+            event.preventDefault();
+            const emailVal = document.getElementById('login-email').value;
+            
+            // Set user indicators inside active application workspace
+            document.getElementById('user-display-name').innerText = emailVal;
+            document.getElementById('avatar-char').innerText = emailVal.charAt(0).toUpperCase();
+
+            // Animate transition into active desktop view space
+            document.getElementById('gateway-stage').classList.add('hidden');
+            document.getElementById('app-workspace').classList.remove('hidden');
+        }
+
+        // Sidebar internal page navigation management switch
+        function switchAppTab(tabName) {
+            const items = document.querySelectorAll('.nav-item');
+            items.forEach(el => el.classList.remove('active'));
+            
+            document.getElementById('tab-inbox').classList.add('hidden');
+            document.getElementById('tab-fleet').classList.add('hidden');
+
+            if (tabName === 'inbox') {
+                document.getElementById('tab-inbox').classList.remove('hidden');
+                event.currentTarget.classList.add('active');
+            } else if (tabName === 'fleet') {
+                document.getElementById('tab-fleet').classList.remove('hidden');
+                event.currentTarget.classList.add('active');
+            }
+        }
+
+        // Terminate active app tracking runtime session
+        function terminateSession() {
+            document.getElementById('app-workspace').classList.add('hidden');
+            document.getElementById('gateway-stage').classList.remove('hidden');
+        }
+    </script>
 </body>
 </html>
