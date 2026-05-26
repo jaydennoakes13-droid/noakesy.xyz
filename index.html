@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noakesy Mail Engine</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0d0e15 0%, #151724 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: 1fr 1.2fr;
+            }
+        }
+
+        .card {
+            background: rgba(30, 33, 50, 0.7);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            padding: 40px 30px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .brand-header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .brand-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #6366f1, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-header p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            background: #0f111a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 14px 16px;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .panel-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-title::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background: #a855f7;
+            border-radius: 4px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-box {
+            background: rgba(15, 17, 26, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .stat-box span {
+            display: block;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+        }
+
+        .stat-box h2 {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-top: 5px;
+        }
+
+        .info-list {
+            list-style: none;
+        }
+
+        .info-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            color: #cbd5e1;
+        }
+
+        .info-list li:last-child {
+            border-bottom: none;
+        }
+
+        .info-list strong {
+            color: #a855f7;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="card">
+            <div class="brand-header">
+                <h1>NOAKESY MAIL</h1>
+                <p>Secure Inbox Gateway</p>
+            </div>
+            
+            <form action="https://webmail.purelymail.com/login.php" method="POST">
+                <div class="form-group">
+                    <label for="rcmloginuser">Email Address</label>
+                    <input type="email" id="rcmloginuser" name="_user" class="form-input" placeholder="name@noakesy.xyz" required autocomplete="username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="rcmloginpwd">Password</label>
+                    <input type="password" id="rcmloginpwd" name="_pass" class="form-input" placeholder="••••••••" required autocomplete="current-password">
+                </div>
+                
+                <input type="hidden" name="_action" value="login">
+                <input type="hidden" name="_timezone" value="_auto_">
+                
+                <button type="submit" class="btn-primary">Sign In to Inbox</button>
+            </form>
+        </div>
+
+        <div class="card dashboard">
+            <div>
+                <div class="panel-title">System Topology</div>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <span>Domain Status</span>
+                        <h2 style="color: #10b981;">ACTIVE</h2>
+                    </div>
+                    <div class="stat-box">
+                        <span>Active Fleet</span>
+                        <h2>Infinite</h2>
+                    </div>
+                </div>
+
+                <div class="panel-title">Mail Engine Specs</div>
+                <ul class="info-list">
+                    <li><span>MX Server</span> <strong>mailserver.purelymail.com</strong></li>
+                    <li><span>IMAP Protocol</span> <strong>imap.purelymail.com (Port 993)</strong></li>
+                    <li><span>SMTP Protocol</span> <strong>smtp.purelymail.com (Port 465)</strong></li>
+                    <li><span>Storage Allocation</span> <strong>Resource Shared Pool</strong></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
