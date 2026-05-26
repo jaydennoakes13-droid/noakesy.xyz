@@ -1,18 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>noakesy.xyz | Loading...</title>
-    <style>
-        body { background: #06070a; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; }
-    </style>
+    <title>Connection Test</title>
 </head>
 <body>
-    <div id="status">Initializing Terminal...</div>
+    <div id="log">Testing...</div>
 
     <script type="module">
+        // Import only what is strictly necessary
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyACkpKa9X-L-k6vnG4Zb3vi-9DB_amNJ2w",
@@ -23,12 +20,17 @@
             appId: "1:451137486895:web:40de2a8c7986f7c46b46da"
         };
 
+        const log = (msg) => document.getElementById('log').innerHTML += "<br>" + msg;
+
         try {
             const app = initializeApp(firebaseConfig);
             const db = getFirestore(app);
-            document.getElementById('status').innerText = "Connection Successful: Database Linked.";
-        } catch (e) {
-            document.getElementById('status').innerText = "Error: " + e.message;
+            log("Firebase initialized.");
+            
+            const querySnapshot = await getDocs(collection(db, "inbox"));
+            log("Database connected. Found " + querySnapshot.size + " documents.");
+        } catch (error) {
+            log("CRITICAL ERROR: " + error.message);
         }
     </script>
 </body>
